@@ -3,22 +3,19 @@
 int ft_printf(const char *format, ...)
 {
 		va_list args;
+		int count;
 		va_start(args, format);
-		int i = 0;
-		while(format[i])
+		int i = -1;
+		count = 0;
+		while(format[++i])
 		{
-			if(format[i] == '%')
-			{
-			 		if (format[i + 1] == 'c')
-							ft_putchar(va_arg(args, int));
-					else if (format[i] == '%' && format[i + 1] == 's')
-							ft_prstring(va_arg(args, char *));
-					i += 2;	
-			}
-
-			ft_putchar(format[i++]);
+			if(format[i] == '%' && !format[i + 1] )
+				break;
+			else if(format[i] == '%')
+				count += ft_parsing(format[++i], args);
+			else
+				count += ft_putchar(format[i]);
 		}
-		// printf("tessrt - %d", va_arg(args, int));
-		// printf("tessrt - %s", va_arg(args, char *));
-
+		va_end(args);
+		return (count);
 }
